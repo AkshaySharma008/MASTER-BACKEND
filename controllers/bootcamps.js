@@ -1,5 +1,7 @@
 //In this file we will just put the whole logic of the api and exports that function as:
 
+const Bootcamp = require('../models/Bootcamps');
+
 // @desc    Get All Bootcamps
 // @route   GET /api/v1/bootcamps
 // @access  Public
@@ -22,8 +24,18 @@ exports.getBootcamp = (req, res, next) => {
 // @route   POST /api/v1/bootcamps
 // @access  Private
 
-exports.createBootcamp = (req, res, next) => {
-  res.status(200).send({ success: true, message: 'create a bootcamp' });
+exports.createBootcamp = async (req, res, next) => {
+  try {
+    const bootcamp = await Bootcamp.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: bootcamp,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+    });
+  }
 };
 
 // @desc    Update A Bootcamp
